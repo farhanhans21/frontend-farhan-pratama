@@ -10,17 +10,17 @@ import {
 } from "lucide-react";
 
 const fetchCountries = async () => {
-  const response = await fetch("http://202.157.176.100:3001/negaras");
+  const response = await fetch("/api/negaras");
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
-  console.log(response);
   return response.json();
 };
 
 const fetchPorts = async (countryId) => {
+  const filter = JSON.stringify({ where: { id_negara: countryId } });
   const response = await fetch(
-    `http://202.157.176.100:3001/pelabuhans?filter={"where" : {"id_negara":${countryId}}}`
+    `/api/pelabuhans?filter=${encodeURIComponent(filter)}`
   );
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
@@ -29,8 +29,9 @@ const fetchPorts = async (countryId) => {
 };
 
 const fetchGoods = async (portId) => {
+  const filter = JSON.stringify({ where: { id_pelabuhan: portId } });
   const response = await fetch(
-    `http://202.157.176.100:3001/barangs?filter={"where" : {"id_pelabuhan":${portId}}}`
+    `/api/barangs?filter=${encodeURIComponent(filter)}`
   );
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
